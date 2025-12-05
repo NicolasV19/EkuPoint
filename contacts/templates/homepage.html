@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<style type="text/css">
+    .custom-color {
+        background-color: #680000ff;
+        }
+table.blueTable {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+table.blueTable td, table.blueTable th {
+  border: 0px solid #AAAAAA;
+}
+table.blueTable tbody td {
+  font-size: 13px;
+}
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EkuPoint</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .action-btn { margin-right: 0.5rem; }
+    </style>
+</head>
+<body style="font-family: Figtree, sans-serif; background-color: #e0e0e0ff">
+    <nav class="navbar navbar-expand-lg navbar-dark custom-color shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'index' %}">EkuPoint</a>
+            <div class="navbar-nav ms-auto">
+            <a class="btn btn-outline-light btn-xs" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-left"></i> Login</a>
+            <p>&nbsp</p>
+            <div class="vr"></div>
+            <p>&nbsp</p>
+            <a class="btn btn-outline-light btn-xs" href="{% url 'register' %}"><i class="bi bi-person-fill"></i> Create Account</a>
+            </div>
+            </div>
+            </div>
+        </div>
+    </nav>
+    <p>&nbsp</p>
+    <div class="d-flex justify-content-between align-items-center mb-3" style="margin: 20px; padding: 5px;">
+    <p>&nbsp</p>
+    <h1 class="outlined-text"><b>Welcome to EkuPoint!</b></h1>
+    <p>&nbsp</p>
+    </div>
+    <div class="d-flex justify-content-between align-items-center xl-3">
+    <p>&nbsp</p>
+    <img src="{% static 'logo-stte-jakarta-bwt-kopsurat.png' %}" width="400">
+    {% comment %} <h6>Aktivitas Mahasiswa Terbaru</h6> {% endcomment %}
+    <p>&nbsp</p>
+    
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3" style="margin: 20px; margin-top: -25px; padding: 5px;">
+    <p>&nbsp</p>
+    <p>     EkuPoint adalah solusi cerdas untuk menyeimbangkan kehidupan kampus. Kami percaya bahwa mahasiswa yang unggul tidak hanya dilihat dari IPK, tetapi juga dari karakter dan keaktifannya. EkuPoint hadir untuk memastikan setiap prestasi tercatat dan setiap pelanggaran tertangani dengan adil.</p>
+    <p>&nbsp</p>
+    </div>
+    <p>&nbsp</p>
+    <hr>
+{% comment %} <div class="d-flex justify-content-between align-items-center mb-3" style="margin: 20px; padding: 5px;">
+<p>&nbsp</p>
+<h1 class="outlined-text"><b>Statistika</b></h1>
+<p>&nbsp</p>
+</div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+<p>&nbsp</p>
+<table style="margin: 20px; margin-top: -25px; padding: 5px; text-align: center;">
+    <tr>
+    <td colspan="2">
+    <div class="card card-xs shadow-sm">
+    <div class="card-body">
+    <h1 style="font-size: 100px;"><strong>{{ total_mhs }}</strong></h1>
+    <h3><strong>Total Mahasiswa</strong></h3>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <div class="card bg-success shadow-sm">
+    <div class="card-body">
+    <h1 style="font-size: 100px;"><strong>{{ aktivitas_count }}<br></strong></h1>
+    <h3><strong>Aktivitas Terdata</strong></h3>
+    <p>&nbsp</p>
+    </div>
+    </div>
+    </td>
+
+    <td>
+    <div class="card bg-danger shadow-sm">
+    <div class="card-body">
+    <h1 style="font-size: 100px;"><strong>{{ pelanggaran_count }}<br></strong></h1>
+    <h3 style="font-size: 28px;"><strong>Pelanggaran Terdata</strong></h3>
+    <p>&nbsp</p>
+    </div>
+    </div>
+    </td>
+
+
+    </div>
+    </div>
+    </td>
+    </tr>
+    </table>
+<p>&nbsp</p>
+</div> {% endcomment %}
+
+{% comment %} <div class="card">
+    <div class="card-body overflow-x-auto">
+        <table class="table table-xs table-striped table-hover">
+            <thead>
+                <tr> {% endcomment %}
+
+                    {% comment %} <th>User</th> {% endcomment %}
+                    {% comment %} <th>Nama Lengkap</th>
+                    <th>Prodi</th>
+                    <th>Angkatan</th>
+                    <th>Aktivitas</th>
+                    <th>Jenis</th>
+                    <th>Lingkup</th>
+                    <th>Poin</th>
+                    <th>Tanggal</th> {% endcomment %}
+                    {% comment %} <th>Link</th>
+                    <th>Status</th>
+                    <th>Aksi</th> {% endcomment %}
+
+                {% comment %} </tr>
+            </thead>
+            <tbody>
+            {% for akt in aktivitas_records|slice:"5" %}
+                <tr class="hover:bg-base-300"> {% endcomment %}
+
+                    {% comment %} <td>{{ akt.user.username }}</td> {% endcomment %}
+
+                    {% comment %} <td>{{ akt.user.get_full_name }}</td>
+                    <td>{{ akt.user.prodi }}</td>
+                    <td>{{ akt.user.angkatan }}</td>
+                    <td>{{ akt.aturan_merit.aktivitas }}</td>
+                    <td>{{ akt.aturan_merit.jenis }}</td>
+                    <td>{{ akt.aturan_merit.lingkup }}</td>
+                    <td>{{ akt.poin }}</td>
+                    <td>{{ akt.created_at|date:"d M Y" }}</td> {% endcomment %}
+
+                {% comment %} {% if akt.user == user or is_admin or is_staff %}
+                    <td>{{ akt.file}}</td>
+                    <td>{{ akt.status }}</td>
+                    {% if akt.status == 'approved' %}
+                    <td></td>
+                    {% else %}
+                    <td>
+                        <a href="{% url 'aktivitas_edit' akt.id %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'aktivitas_delete' akt.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this activity?');">Delete</a>
+                    </td> {% endcomment %}
+                    {% comment %} {% endif %} {% endcomment %}
+                {% comment %} {% else %}
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                {% endif %} {% endcomment %}
+
+                {% comment %} </tr>
+                {% empty %}
+                <tr class="hover:bg-base-300"><td colspan="8" class="text-center">Belum ada data.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div> {% endcomment %}
+
+{% comment %} Login atau Sign Up dalam 2 pilihan {% endcomment %}
+
+{% comment %} <table class="blueTable">
+<tbody>
+<tr>
+<td><a href="{% url 'login' %}"><img src="static/login.png" width="350"></a></td>
+<td><a href="{% url 'register' %}"><img src="static/signup.png" width="350"></a></td>
+</tr>
+<tr>
+<td><h1><a href="{% url 'login' %}" style="color: #000000ff">Login</a></h1></td>
+<td><h1><a href="{% url 'register' %}" style="color: #000000ff">Create Account</a></h1></td>
+</tr>
+</tbody>
+</table> {% endcomment %}
+
+
+
+
+{% comment %} Logging / Storytelling {% endcomment %}
+{% comment %} Kalo mau dipake dibuang tag2 commentnya {% endcomment %}
+
+{% comment %} <div>
+{% for p in aktivitas_records|slice:"5" %}
+<p>Seorang mahasiswa bernama {{ p.user.get_full_name }} melakukan aktivitas berupa {{ p.aturan_merit.aktivitas }}
+{% if p.aturan_merit.lingkup == 'internal' %}
+di dalam kampus
+{% else %}
+di luar kampus
+{% endif %}
+ pada {{ p.created_at|date:"d M Y" }}</p>
+{% endfor %}
+</div> {% endcomment %}
+ 
+</body>
+</html>

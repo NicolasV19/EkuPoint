@@ -1,0 +1,110 @@
+<!-- templates/registration/register.html -->
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        .error { color: red; font-size: 0.9em; }
+        .success { color: green; font-size: 0.9em; }
+        .form-group { margin-bottom: 1rem; }
+        input { display: block; width: 100%; padding: 0.5rem; margin-top: 0.25rem; }
+        button { padding: 0.75rem 2rem; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .form-container { max-width: 400px; margin: 2rem auto; padding: 2rem; border: 1px solid #ddd; }
+    </style>
+</head>
+<body style="font-family: Figtree, sans-serif; ">
+
+    <div class="form-container" style="background-color: #ffffffff; padding: 0.3rem; border-radius: 0.7rem; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <h1><b>Create Account</b></h1>
+        
+        <div id="message-container"></div>
+        
+        <form 
+            hx-post="{% url 'register' %}" 
+            hx-target="#message-container"
+            hx-swap="innerHTML"
+            hx-trigger="submit"
+            id="register-form"
+        >
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_username">Username:</label>
+                <input type="text" name="username" id="id_username" class="input input-neutral" required>
+                <div id="username-errors" class="error"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_email">Email:</label>
+                <input type="email" name="email" id="id_email" class="input input-neutral" required>
+                <div id="email-errors" class="error"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password1">Password:</label>
+                <input type="password" name="password1" id="id_password1" class="input input-neutral" required>
+                <div id="password1-errors" class="error"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password2">Confirm Password:</label>
+                <input type="password" name="password2" id="id_password2" class="input input-neutral" required>
+                <div id="password2-errors" class="error"></div>
+            </div>
+            
+            <button type="submit" id="submit-btn">Register</button>
+        </form>
+    </div>
+
+    <script>
+        // Handle form submission response
+        document.body.addEventListener('htmx:afterRequest', function(event) {
+            if (event.target.id === 'register-form') {
+                const response = JSON.parse(event.detail.xhr.responseText);
+                
+                // Clear previous errors
+                document.querySelectorAll('.error').forEach(el => el.innerHTML = '');
+                document.getElementById('message-container').innerHTML = '';
+                
+                if (response.success) {
+                    // Show success message and redirect
+                    document.getElementById('message-container').innerHTML = 
+                        `<div class="success">${response.message}</div>`;
+                    
+                    setTimeout(() => {
+                        window.location.href = response.redirect_url;
+                    }, 1500);
+                    
+                } else {
+                    // Display validation errors
+                    for (const field in response.errors) {
+                        const errorElement = document.getElementById(`${field}-errors`);
+                        if (errorElement) {
+                            errorElement.innerHTML = response.errors[field]
+                                .map(error => error.message)
+                                .join('<br>');
+                        }
+                    }
+                    
+                    // Show general error message
+                    if (Object.keys(response.errors).length > 0) {
+                        document.getElementById('message-container').innerHTML = 
+                            '<div class="error">Please correct the errors below.</div>';
+                    }
+                }
+            }
+        });
+
+        // Real-time validation (optional)
+        document.getElementById('id_email').addEventListener('blur', function() {
+            const email = this.value;
+            if (email) {
+                htmx.ajax('GET', `/check-email/?email=${email}`, '#email-errors');
+            }
+        });
+    </script>
+</body>
+</html>

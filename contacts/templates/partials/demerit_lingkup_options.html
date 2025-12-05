@@ -1,0 +1,7 @@
+<label for="aturan_demerit" class="form-label">Lingkup & Poin</label>
+<select id="aturan_demerit" name="aturan_demerit" class="form-select" required>
+    <option selected disabled>Pilih Lingkup...</option>
+    {% for rule in rules %}
+        <option value="{{ rule.id }}">{{ rule.lingkup }} (Poin: {{ rule.poin }})</option>
+    {% endfor %}
+</select>

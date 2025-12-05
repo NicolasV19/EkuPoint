@@ -1,0 +1,11 @@
+<label for="aktivitas" class="form-label">Aktivitas</label>
+<select id="aktivitas" name="aktivitas" class="form-select"
+        hx-get="{% url 'get_jenis_options' %}"
+        hx-target="#jenis-container"
+        hx-include="[name='bidang']"
+        hx-trigger="change">
+    <option selected disabled>Pilih Aktivitas...</option>
+    {% for a in aktivitas_options %}
+        <option value="{{ a }}">{{ a }}</option>
+    {% endfor %}
+</select>

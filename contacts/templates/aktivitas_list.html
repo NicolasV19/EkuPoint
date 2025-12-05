@@ -1,0 +1,90 @@
+{% extends "header.html" %}
+
+{% block content %}
+<style>
+.wrap-text {
+    word-wrap: break-word; /* Legacy name */
+    overflow-wrap: break-word; /* Standard name */
+    max-width: 350px; /* Optional: define a maximum width for the cell */
+}
+</style>
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <h1>Daftar Aktivitas Merit</h1>
+{% if akt.user == user or is_admin or is_staff %}
+    <p></p>
+{% else %}
+    <a href="{% url 'aktivitas_add' %}" class="btn btn-primary">Tambah Aktivitas</a>
+{% endif %}
+</div>
+
+
+<div class="card">
+    <div class="card-body overflow-x-auto">
+        <table class="table table-xs table-hover">
+            <thead>
+                <tr>
+                {% if is_admin or is_staff %}
+                    {% comment %} <th>User</th> {% endcomment %}
+                    <th>Nama Lengkap</th>
+                    <th>NIM</th>
+                {% else %}
+
+                {% endif %}
+                    <th>Aktivitas</th>
+                    <th>Jenis</th>
+                    <th>Lingkup</th>
+                    <th>Poin</th>
+                    <th>Tanggal</th>
+                    <th>Link</th>
+                    <th>Status</th>
+                    {% if status == 'approved' %}
+
+                    {% else %}
+                    <th>Aksi</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for akt in aktivitas_records %}
+            {% if akt.status == 'approved' %}
+                <tr class="hover:bg-base-300">
+            {% else %}
+                <tr onclick="window.location.href='{% url 'aktivitas_edit' akt.id %}'" style="cursor: pointer;">
+            {% endif %}
+            {% if is_admin or is_staff %}
+                    {% comment %} <td>{{ akt.user.username|wordwrap:25 }}</td> {% endcomment %}
+                    <td>{{ akt.user.get_full_name|wordwrap:25 }}</td>
+                    <td>{{ akt.user.nim }}</td>
+            {% else %}
+
+                {% endif %}
+                    <td>{{ akt.aturan_merit.aktivitas|wordwrap:25 }}</td>
+                    <td>{{ akt.aturan_merit.jenis|wordwrap:25 }}</td>
+                    <td>{{ akt.aturan_merit.lingkup|wordwrap:25 }}</td>
+                    <td>{{ akt.poin }}</td>
+                    <td>{{ akt.created_at|date:"d M Y" }}</td>
+                {% if akt.user == user or is_admin or is_staff %}
+                    <td class="wrap-text">{{ akt.file }}</td>
+                    <td>{{ akt.status }}</td>
+                    {% if akt.status == 'approved' %}
+                    
+                    
+                    {% else %}
+                    <td>
+                        {% comment %} <a href="{% url 'aktivitas_edit' akt.id %}" class="btn btn-sm btn-warning">Edit</a> {% endcomment %}
+                        <a href="{% url 'aktivitas_delete' akt.id %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                    {% endif %}
+                {% else %}
+
+                {% endif %}
+                </tr>
+                {% empty %}
+                <tr class="hover:bg-base-300"><td colspan="8" class="text-center">Belum ada data.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "header.html" %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - LPPM Penelitian</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="mb-0">{{ title }}</h2>
+                    </div>
+                                        <div role="alert" class="alert alert-warning">
+                            <h1><strong>⚠️ Penting!</strong></h1> 
+                            <h3><strong>Terkait Pengumpulan Keterangan/Bukti Poin Merit</strong><br></h3>
+
+<h5 class="text-justify">Sebelum mengirimkan keterangan atau Bukti Poin Merit, pastikan file yang Anda submit tidak dihapus dari penyimpanan Anda (misalnya Google Drive).<br>
+Karena:<br>
+1. Sistem hanya menyimpan tautan, bukan file asli.<br>
+2. Jika file dihapus atau dipindahkan, admin tidak bisa mengaksesnya.<br>
+3. Akibatnya, proses verifikasi menjadi terhambat dan penilaian Poin Merit tidak dapat diproses<br></h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            {% for field in form %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text }}</div>
+                                {% endif %}
+                                {% if field.errors %}
+                                <div class="text-danger">{{ field.errors }}</div>
+                                {% endif %}
+                                
+                            </div>
+                            {% endfor %}
+                            
+                            <div class="d-flex justify-content-between">
+                                <button onclick="history.back()" class="btn btn-secondary">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% for data in user_rekap_list %}
+                <tr onclick="window.location.href='{% url 'user_rekap' data.user_obj.id %}'" style="cursor: pointer;">
+                    <td>{{ data.user_obj.username }}</td>
+                    <td>{{ data.user_obj.get_full_name }}</td>
+                    <td>{{ data.user_obj.nim }}</td>
+                    <td>{{ data.user_obj.prodi }}</td>
+                    <td>{{ data.user_obj.angkatan }}</td>
+                    
+                    <td>{{ data.aktivitas|default:"0" }}</td>
+                    <td>{{ data.pelanggaran|default:"0" }}</td>
+                    
+                    <td><strong>{{ data.total }}</strong></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center">Belum ada data mahasiswa.</td>
+                </tr>
+                {% endfor %}

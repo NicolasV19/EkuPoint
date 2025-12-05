@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "header.html" %}
+{% block content %}
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="mb-0">Confirm Delete</h2>
+                    </div>
+                    <div class="card-body">
+                        <p>Apakah anda yakin ingin membuang pelanggaran ini?</p>
+                        
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="d-flex justify-content-between">
+                                <button onclick="history.back()" class="btn btn-secondary">Cancel</button>
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

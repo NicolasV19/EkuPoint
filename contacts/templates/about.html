@@ -1,0 +1,20 @@
+{% extends "header.html" %}
+
+{% block content %}
+
+<h1><strong>Profil</strong></h1>
+<hr>
+<p><strong>Nama:</strong> {{ user.get_full_name }}</p>
+<p><strong>Username:</strong> {{ user.username }}</p>
+<p><strong>NIM:</strong> {{ user.nim }}</p>
+<p><strong>Program Studi:</strong> {{ user.prodi }}</p>
+<p><strong>Angkatan:</strong> {{ user.angkatan }}</p>
+<p><strong>Modal Poin:</strong> {{ modal_poin }}</p>
+<p>&nbsp</p>
+
+<button onclick="history.back()" class="btn btn-danger">Kembali</button>
+
+
+
+
+{% endblock %}

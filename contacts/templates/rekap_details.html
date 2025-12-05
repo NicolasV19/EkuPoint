@@ -1,0 +1,112 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .akt_total {
+        background-color: #238500ff;
+        }
+    .pel_total {
+        background-color: #9f0000ff;
+        }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+<div>
+<h1><strong>{{ user_obj.get_full_name }} ({{ user_obj.username }})</strong></h1>
+<h6>NIM: {{ user_obj.nim }}</h6>
+<h6>Prodi: {{ user_obj.prodi }}</h6>
+<h6>Angkatan: {{ user_obj.angkatan }}</h6>
+</div>
+{% comment %} <a class="btn btn-danger btn-xs" href="{% url 'generate_pdf_user' user_obj.id %}?download=true"><i class="bi bi-download"></i></i> Download PDF</a> {% endcomment %}
+<a class="btn btn-danger btn-xs" href="{% url 'generate_user_table_pdf' user_obj.id %}?download=true"><i class="bi bi-download"></i></i> Download PDF Table</a>
+</div>
+<p>&nbsp</p>
+<h3><strong>Poin Modal: {{ modal_poin }}</strong></h3>
+
+
+
+<div class="card">
+    <div class="card-body overflow-x-auto">
+    <h1>Aktivitas Mahasiswa</h1>
+        <table class="table table-xs table-hover">
+            <thead>
+                <tr>
+                    <th>Aktivitas</th>
+                    <th>Jenis</th>
+                    <th>Lingkup</th>
+                    <th>Poin</th>
+                    <th>Tanggal</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for akt in aktivitas_records %}
+                <tr class="hover:bg-base-300">
+                    {% comment %} <td>{{ akt.user.username }}</td> {% endcomment %}
+                    <td>{{ akt.aturan_merit.aktivitas }}</td>
+                    <td>{{ akt.aturan_merit.jenis }}</td>
+                    <td>{{ akt.aturan_merit.lingkup }}</td>
+                    <td>{{ akt.poin }}</td>
+                    <td>{{ akt.created_at|date:"d M Y" }}</td>
+                </tr>
+            {% empty %}
+                <tr class="hover:bg-base-300"><td colspan="6" class="text-center">Belum ada data.</td></tr>
+            {% endfor %}
+                <tr class="akt_total">
+                    <td><strong>Total: </strong></td>
+                    <td></td>
+                    <td></td>
+                    <td><b>{{ user_akt_total }}</b></td>
+                    <td></td>                   
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<p>&nbsp</p>
+
+
+<div class="card">
+    <div class="card-body overflow-x-auto">
+    <h1>Pelanggaran Mahasiswa</h1>
+        <table class="table table-xs table-hover">
+            <thead>
+                <tr>
+                    <th>Pelanggaran</th>
+                    <th>Lingkup</th>
+                    <th>Poin</th>
+                    <th>Tanggal</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for pel in pelanggaran_records %}
+                <tr class="hover:bg-base-300">
+                    {% comment %} <td>{{ akt.user.username }}</td> {% endcomment %}
+                    <td>{{ pel.aturan_demerit.pelanggaran }}</td>
+                    <td>{{ pel.aturan_demerit.lingkup }}</td>
+                    <td>{{ pel.poin }}</td>
+                    <td>{{ pel.created_at|date:"d M Y" }}</td>
+                </tr>
+            {% empty %}
+                <tr class="hover:bg-base-300"><td colspan="6" class="text-center">Belum ada data.</td></tr>
+            {% endfor %}
+                <tr class="hover:bg-base-300">
+                    <td><strong>Total: </strong></td>
+                    <td></td>
+                    <td><b>{{ user_pel_total }}</b></td>
+                    <td></td>                   
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<p>&nbsp</p>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="card">
+        <div class="card-body justify-content-between overflow-x-auto bg-warning">
+            <h3>Total Keseluruhan: {{ user_net_total }}</h3>
+        </div>
+    </div>
+</div>
+<p>&nbsp</p>
+{% endblock %}

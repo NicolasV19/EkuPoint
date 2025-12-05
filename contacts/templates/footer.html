@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-dark custom-color shadow-sm p-3 mb-5">
+        <div class="container">
+        <div class="navbar-center">
+            <a class="navbar-brand" href="{% url 'dashboard' %}"><strong>EkuPoint</strong></a>
+        </div>
+        <div class="navbar navbar-expand-lg">
+            <a class="btn btn-ghost" style="color: #FFFFFF" href="{% url 'aktivitas_list' %}">Aktivitas</a>
+            {% comment %} {% if is_admin or is_staff %} {% endcomment %}
+            <a class="btn btn-ghost" style="color: #FFFFFF" href="{% url 'pelanggaran_list' %}">Pelanggaran</a>
+            {% if is_admin or is_staff %}
+            <a class="btn btn-ghost" style="color: #FFFFFF" href="{% url 'rekap' %}">Rekap</a>
+            {% else %}
+            <p></p>
+            {% endif %}
+            {% comment %} {% if is_admin or is_staff %}
+            <a class="btn btn-outline-light btn-xs" href="{% url 'admin:index' %}">Admin Panel</a>
+            {% else %}
+            <p></p>
+            {% endif %} {% endcomment %}
+                <p>&nbsp</p>
+            </div>
+            <div class="navbar bg-base-100">
+                    <span class="navbar-text me-3" style="color: #FFFFFF">Welcome, {{ user.get_full_name }} A.K.A. {{ user.username }}
+                {% if is_admin or is_staff %}
+                    <span class="badge bg-danger ms-1">Admin</span>
+                {% else %}
+                    <span class="badge bg-info ms-1">Student</span>
+                {% endif %}
+                </span>
+
+            <a class="btn btn-outline-light btn-xs" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            <p>&nbsp</p>
+            {% if is_admin or is_staff %}
+                    <a class="btn btn-outline-light btn-xs" href="{% url 'admin:index' %}"><i class="bi bi-person"> Admin Panel</i></a>
+            {% else %}
+                    <p></p>
+            {% endif %}
+
+            </div>
+            </div>
+        </div>
+    </nav>

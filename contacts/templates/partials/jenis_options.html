@@ -1,0 +1,11 @@
+<label for="jenis" class="form-label">Jenis / Peran</label>
+<select id="jenis" name="jenis" class="form-select"
+        hx-get="{% url 'get_lingkup_options' %}"
+        hx-target="#lingkup-container"
+        hx-include="[name='bidang'], [name='aktivitas']"
+        hx-trigger="change">
+    <option selected disabled>Pilih Jenis...</option>
+    {% for j in jenis_options %}
+        <option value="{{ j }}">{{ j }}</option>
+    {% endfor %}
+</select>

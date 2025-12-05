@@ -1,0 +1,74 @@
+{% extends "header.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Rekapan Data</h1>
+    
+    <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center">
+            <label class="me-2 text-muted">Sort by:</label>
+
+            <select name="sort" 
+                    id="sortDropdown"
+                    class="form-select form-select-sm" 
+                    hx-get="{% url 'rekap' %}" 
+                    hx-swap="innerHTML" 
+                    hx-trigger="change"
+                    hx-push-url="true"
+                    hx-target="#tabel-body">
+                <option value="first_name" {% if request.GET.sort == 'first_name' %}selected{% endif %}>Nama</option>
+                <option value="prodi" {% if request.GET.sort == 'prodi' %}selected{% endif %}>Prodi</option>
+                <option value="angkatan" {% if request.GET.sort == 'angkatan' %}selected{% endif %}>Angkatan</option>
+            </select>
+        </div>
+
+        <a class="btn btn-danger btn-sm" 
+           href="{% url 'generate_pdf' %}?sort=first_name" 
+           id="btnExportPDF"
+           target="_blank">
+           <i class="bi bi-file-pdf"></i> Print PDF
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Nama Lengkap</th>
+                    <th>NIM</th>
+                    <th>Prodi</th>
+                    <th>Angkatan</th>
+                    <th>Total Merit</th>
+                    <th>Total Demerit</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            
+            <tbody id="tabel-body">
+                {% include 'partials/rekap_table.html' %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const dropdown = document.getElementById('sortDropdown');
+        const btnPrint = document.getElementById('btnExportPDF');
+        const baseUrl = "{% url 'generate_pdf' %}"; 
+
+        function updateLink() {
+            const selectedVal = dropdown.value;
+            btnPrint.href = `${baseUrl}?sort=${selectedVal}`;
+        }
+
+        dropdown.addEventListener('change', updateLink);
+        // Opsional: Jalankan sekali saat load
+        // updateLink(); 
+    });
+</script>
+
+{% endblock %}

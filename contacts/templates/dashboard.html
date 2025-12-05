@@ -1,0 +1,243 @@
+{% extends "header.html" %}
+
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<style type="text/css">
+    .custom-background-color {
+        background-color: #e9e9e9ff;
+        }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EkuPoint</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .action-btn { margin-right: 0.5rem; }
+        table {
+        table-layout: fixed;
+        width: 100%; /* Optional: Make the table span the full width of its container */
+        height: 100%; /* Optional: Adjust height as needed */
+        border-collapse: collapse; /* Optional: Collapses borders for a cleaner look */
+    }
+    </style>
+</head>
+<body class="custom-background-color">
+
+
+{% comment %} <a class="btn btn-primary" href="{% url 'aktivitas_list' %}">Aktivitas</a> {% endcomment %}
+{% comment %} {% if is_admin or is_staff %} {% endcomment %}
+{% comment %} <a class="btn btn-danger" href="{% url 'pelanggaran_list' %}">Pelanggaran</a>
+<p>&nbsp</p> {% endcomment %}
+
+{% comment %} {% else %}
+<p></p>
+{% endif %} {% endcomment %}
+
+
+<!----------------- bwt admin ---------------------->
+{% if is_admin or is_staff %}
+    {% if pending_count > 0 %}
+        <div role="alert" class="alert alert-warning">
+            <a href="{% url 'aktivitas_list' %}" class="card-body">
+                <h5 class="card-title link-hover" >Ada {{ pending_count }} aktivitas yang belum di approve, tolong di cek</h5>
+            </a>
+        </div>
+    {% else %}
+        <p></p>
+    {% endif %}
+<p>&nbsp</p>
+
+<h1><strong>Halo, {{ user.get_full_name }}!</strong></h1>
+<h2>Summary:</h2>
+<table>
+<tr>
+    <td colspan="2">
+    <div class="card card-xs shadow-sm" style="text-align: center;">
+    <div class="card-body">
+    <h1 style="font-size: 100px;"><strong>{{ total_mhs }}</strong></h1>
+    <h3><strong>Total Mahasiswa</strong></h3>
+    </td>
+</tr>
+<tr>
+<tr>
+    <td>
+    <div class="card bg-success shadow-sm">
+    <div class="card-body">
+    <h1 style="font-size: 100px;"><strong>{{ aktivitas_count }}<br></strong></h1>
+    <h3><strong>Aktivitas Terdata</strong></h3>
+    <p>&nbsp</p>
+    </div>
+    </div>
+    </td>
+
+    <td>
+    <div class="card bg-danger shadow-sm">
+    <div class="card-body">
+    <h1 style="font-size: 100px;"><strong>{{ pelanggaran_count }}<br></strong></h1>
+    <h3 style="font-size: 28px;"><strong>Pelanggaran Terdata</strong></h3>
+    <p>&nbsp</p>
+    </div>
+    </div>
+    </td>
+
+
+    </div>
+    </div>
+    </td>
+    </tr>
+<td>
+<div class="card bg-success w-96 bg-base-100 card-xs shadow-sm ">
+ <div class="card-body">
+    <h1 style="font-size: 100px;"><strong>{{ total_aktivitas_real }}<br></strong></h1>
+    <h3 style="font-size: 28px;"><strong>Total Poin Aktivitas</strong></h3>
+    <p>&nbsp</p>
+    </div>
+</div>
+</td>
+<td>
+<div class="card bg-danger w-96 bg-base-100 card-xs shadow-sm">
+ <div class="card-body">
+    <h1 style="font-size: 100px;"><strong>{{ total_pelanggaran_real }}<br></strong></h1>
+    <h3 style="font-size: 28px;"><strong>Total Poin Pelanggaran</strong></h3>
+    <p>&nbsp</p>
+    </div>
+</div>
+</td>                              
+{% comment %} <div class="card bg-warning w-96 bg-base-100 card-xs shadow-sm">
+ <div class="card-body">
+    <h2 class="card-title">Total Poin Kamu: </h2>
+    <h1>{{ total_poin_admin }}</h1>
+</div>
+</div> {% endcomment %}
+<p>&nbsp</p>
+{% else %}
+
+
+
+
+
+
+
+
+<!----------------- bwt mhs ---------------------->
+{% if rejected_count > 0 %}
+<div role="alert" class="alert alert-warning">
+ <a href="{% url 'aktivitas_list' %}" class="card-body">
+    <h5 class="card-title">Ada {{ rejected_count }} aktivitas yang direject, tolong direvisi</h5>
+    </a>
+</div>
+{% elif rejected_count == 0 %}
+<p></p>
+{% endif %}
+<h1><strong>Halo, {{ user.get_full_name }}!</strong></h1>
+<h2><strong>Summary:</strong></h2>
+<table>
+<tr>
+<td>
+<div class="card bg-success w-96 bg-base-100 card-xs shadow-sm ">
+ <div class="card-body">
+    <h2 class="card-title">Kamu telah melakukan sejumlah aktivitas</h2>
+    <h2 class="card-title">yang berbobot:</h2>
+    <h1>{{ total_aktivitas_mhs_real }}</h1>
+    <h4>poin</h4>
+    </div>
+</div>
+</td>
+<td>
+<div class="card bg-danger w-96 bg-base-100 card-xs shadow-sm">
+ <div class="card-body">
+    <h1 class="card-title"><strong>Tetapi, </strong><h1>
+    <h4>Kamu telah melakukan <strong>pelanggaran</strong> sebanyak</h4>
+    <h1>{{ total_pelanggaran_mhs_real }}</h1>
+    <h4>poin</h4>
+    </div>
+</div>
+</td>
+</tr>
+</table>
+<div class="card bg-warning w-96 bg-base-100 card-xs shadow-sm">
+ <div class="card-body">
+    <h2 class="card-title">Total Poin Kamu: </h2>
+    <h1>{{ total_poin2 }}</h1>
+    {% if total_poin2  >= 100 %}
+    <h4>Good job! Pertahankan yaa :)</h4>
+    {% elif total_poin2  == 100 %}
+    <h4>Hati-hati yaa, poin kamu pas-pasan nih!</h4>
+    {% elif total_poin2 <= 100 and total_poin2 > 1 %}
+    <h4>Waduh, poin kamu kurang dari 100 nih! Ayo rajin beraktivitas dan hindari pelanggaran :)</h4>
+    {% elif total_poin2 == 0 %}
+    <h4>Waduh, poin kamu 0 nih! Ayo rajin beraktivitas dan hindari pelanggaran :)</h4>
+    {% else %}
+    <h4>Waduh, poin kamu minus nih! Ayo rajin beraktivitas dan hindari pelanggaran :)</h4>
+    {% endif %}
+</div>
+</div>
+<p>&nbsp</p>
+
+
+<h1>Aktivitas Mahasiswa Terbaru</h1>
+
+<div class="card">
+    <div class="card-body overflow-x-auto">
+        <table class="table table-xs table-hover">
+            <thead>
+                <tr>
+                    {% comment %} <th>User</th> {% endcomment %}
+                    <th>Nama Lengkap</th>
+                    <th>Prodi</th>
+                    <th>Angkatan</th>
+                    <th>Aktivitas</th>
+                    <th>Jenis</th>
+                    <th>Lingkup</th>
+                    <th>Poin</th>
+                    <th>Tanggal</th>
+                    {% comment %} <th>Link</th>
+                    <th>Status</th>
+                    <th>Aksi</th> {% endcomment %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for akt in aktivitas_records|slice:"5" %}
+                <tr class="hover:bg-base-300">
+                    {% comment %} <td>{{ akt.user.username }}</td> {% endcomment %}
+                    <td>{{ akt.user.get_full_name }}</td>
+                    <td>{{ akt.user.prodi }}</td>
+                    <td>{{ akt.user.angkatan }}</td>
+                    <td>{{ akt.aturan_merit.aktivitas }}</td>
+                    <td>{{ akt.aturan_merit.jenis }}</td>
+                    <td>{{ akt.aturan_merit.lingkup }}</td>
+                    <td>{{ akt.poin }}</td>
+                    <td>{{ akt.created_at|date:"d M Y" }}</td>
+                {% comment %} {% if akt.user == user or is_admin or is_staff %}
+                    <td>{{ akt.file}}</td>
+                    <td>{{ akt.status }}</td>
+                    {% if akt.status == 'approved' %}
+                    <td></td>
+                    {% else %}
+                    <td>
+                        <a href="{% url 'aktivitas_edit' akt.id %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'aktivitas_delete' akt.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this activity?');">Delete</a>
+                    </td> {% endcomment %}
+                    {% comment %} {% endif %} {% endcomment %}
+                {% comment %} {% else %}
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                {% endif %} {% endcomment %}
+                </tr>
+                {% empty %}
+                <tr class="hover:bg-base-300"><td colspan="8" class="text-center">Belum ada data.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+<p>&nbsp</p>
+</body>
+</html>
+{% endblock %}

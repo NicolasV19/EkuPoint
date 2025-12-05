@@ -1,0 +1,76 @@
+{% extends "header.html" %}
+
+{% block content %}
+<style>
+.wrap-text {
+    word-wrap: break-word; /* Legacy name */
+    overflow-wrap: break-word; /* Standard name */
+    max-width: 350px; /* Optional: define a maximum width for the cell */
+}
+</style>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Daftar Pelanggaran Demerit</h1>
+    {% if is_admin or is_staff %}
+    <a href="{% url 'pelanggaran_add' %}" class="btn btn-danger">Tambah Pelanggaran</a>
+    {% else %}
+    <p></p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                {% if is_admin or is_staff %}
+                    {% comment %} <th>User</th> {% endcomment %}
+                    <th>Nama Lengkap</th>
+                    <th>NIM</th>
+                {% else %}
+
+                {% endif %}
+                    <th>Pelanggaran</th>
+                    <th>Lingkup</th>
+                    <th>Poin</th>
+                    <th>Keterangan</th>
+                    <th>Tanggal</th>
+                    {% if is_admin or is_staff %}
+                    <th>Aksi</th>
+                    {% else %}
+
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in pelanggaran_records %}
+                {% if is_admin or is_staff %}
+                <tr onclick="window.location.href='{% url 'pelanggaran_edit' p.id %}'" style="cursor: pointer;">
+                    {% comment %} <td>{{ p.user.username }}</td> {% endcomment %}
+                    <td>{{ p.user.get_full_name }}</td>
+                    <td>{{ p.user.nim }}</td>
+                {% else %}
+                <tr>
+
+                {% endif %}
+                    <td>{{ p.aturan_demerit.pelanggaran }}</td>
+                    <td>{{ p.aturan_demerit.lingkup }}</td>
+                    <td>{{ p.poin }}</td>
+                    <td class="wrap-text">{{ p.keterangan }}</td>                  
+                    <td>{{ p.created_at|date:"d M Y" }}</td>
+                    {% if is_admin or is_staff %}
+                    <td>
+                        {% comment %} <a href="{% url 'pelanggaran_edit' p.id %}" class="btn btn-sm btn-warning">Edit</a> {% endcomment %}
+                        <a href="{% url 'pelanggaran_delete' p.id %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center">Belum ada data.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
